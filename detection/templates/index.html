@@ -1,0 +1,81 @@
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roti Shape Detector</title>
+    <script>
+        function playAlert(message) {
+            let speech = new SpeechSynthesisUtterance(message);
+            speech.lang = "en-US";
+            speech.rate = 1;
+            window.speechSynthesis.speak(speech);
+        }
+        
+        // Fetching live feedback from backend
+        setInterval(() => {
+            fetch('/detection/roti_status/')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("status").innerText = data.message;
+                if (data.alert) {
+                    playAlert(data.message);
+                }
+            });
+        }, 2000);
+        </script>
+        <script src="https://cdn.tailwindcss.com"></script>
+        
+        <h3 id="status">Checking roti shape...</h3>
+            
+</head>
+<body>
+    <h2>Live Roti Shape Detection</h2>
+    
+    <img src="{% url 'video_feed' %}" width="600" height="400" alt="Video Feed">
+    
+    <script>
+        // Optionally, add logic for dynamic feedback here.
+    </script>
+</body>
+</html> {% endcomment %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roti Shape Detector</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-200 flex flex-col items-center justify-center min-h-screen">
+
+    <h1 class="text-2xl font-bold text-blue-600 mb-4">Live  Shape Detector</h1>
+
+    <div class="bg-white shadow-md rounded-lg p-4">
+        <img src="{% url 'video_feed' %}" class="w-full rounded-lg shadow">
+        <h3 id="status" class="text-lg text-red-600 mt-4">Checking  shape...</h3>
+    </div>
+
+    <script>
+    function playAlert(message) {
+        let speech = new SpeechSynthesisUtterance(message);
+        speech.lang = "en-US";
+        speech.rate = 1;
+        window.speechSynthesis.speak(speech);
+    }
+
+    setInterval(() => {
+        fetch('/detection/roti_status/')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("status").innerText = data.message;
+            if (data.alert) {
+                playAlert(data.message);
+            }
+        });
+    }, 2000);
+    </script>
+
+</body>
+</html>
